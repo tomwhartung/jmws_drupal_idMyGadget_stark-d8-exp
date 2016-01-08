@@ -1,0 +1,5 @@
+# Schema for the configuration files of the IdMyGadget Stark theme.
+
+idmygadget_stark.settings:
+  type: theme_settings
+  label: 'IdMyGadget Stark settings'
