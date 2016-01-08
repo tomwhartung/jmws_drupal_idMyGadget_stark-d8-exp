@@ -21,6 +21,11 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   //  return to this logic if and when the drupal_check_module function is fixed.
   // include_once DRUPAL_ROOT . '/core/includes/install.inc';
   // $idmygadgetIsInstalled = drupal_check_module( 'idmygadget' );
+  $config = \Drupal::config('idmygadget.settings');
+  $gadgetDetector = $config->get('idmygadget_gadget_detector');
+  $showSiteNamePhone = $config->get('idmygadget_show_site_name_phone');
+  $showSiteNameTablet = $config->get('idmygadget_show_site_name_tablet');
+  $showSiteNameDesktop = $config->get('idmygadget_show_site_name_desktop');
 
   $vars['hi_text'] = 'Initializing hi_text';
   $vars['hiText'] = 'Initializing hiText';
@@ -33,22 +38,28 @@ function idmygadget_stark_preprocess_page( &$vars ) {
     $vars['hi_text'] = '$idMyGadgetInfoFile = "' . $idMyGadgetInfoFile . '"';
     if ( file_exists( $idMyGadgetInfoFile ) ) {
       $vars['hiText'] = 'The idMyGadgetInfoFile exists! (exp)';
+      if ( isset($gadgetDetector) ) {
+        $vars['hiText'] = 'Now we try to get the service, then the jmwsIdMyGadget object...';
+        idMyGadget_stark_get_the_service();
+        // $jmwsIdMyGadget
+      }
     } else {
       $vars['hiText'] = 'The idMyGadgetInfoFile does NOT exist (exp).';
     }
     idmygadget_stark_check_idMyGadget_installation();
   }
 
-  $config = \Drupal::config('idmygadget.settings');
-  $gadgetDetector = $config->get('idmygadget_gadget_detector');
-  // idmygadget_show_site_name_
-  $showSiteNamePhone = $config->get('idmygadget_show_site_name_phone');
-  $showSiteNameTablet = $config->get('idmygadget_show_site_name_tablet');
-  $showSiteNameDesktop = $config->get('idmygadget_show_site_name_desktop');
   $vars['gadgetDetectorText'] = 'gadgetDetector = "' . $gadgetDetector . '"';
   $vars['showSiteNamePhoneText'] = '$showSiteNamePhone = "' . $showSiteNamePhone . '"';
   $vars['showSiteNameTabletText'] = '$showSiteNameTablet = "' . $showSiteNameTablet . '"';
   $vars['showSiteNameDesktopText'] = '$showSiteNameDesktop = "' . $showSiteNameDesktop . '"';
+}
+
+function idMyGadget_stark_get_the_service() {
+  require_once DRUPAL_ROOT . '/modules/jmws/idmygadget/src/IdMyGadgetService.php';
+  // This gives an error ...
+  // $idMyGadgetService = new Drupal\idmygadget\IdMyGadgetService();
+  $idMyGadgetService = Drupal::service( 'idmygadget.idmygadget_service' );
 }
 
 /**
