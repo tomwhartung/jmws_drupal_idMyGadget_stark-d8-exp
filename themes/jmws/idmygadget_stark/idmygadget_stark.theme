@@ -35,13 +35,13 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   }
   else {
     $idMyGadgetInfoFile = DRUPAL_ROOT . '/modules/jmws/idmygadget/idmygadget.info.yml';
-    $vars['hi_text'] = '$idMyGadgetInfoFile = "' . $idMyGadgetInfoFile . '"';
     if ( file_exists( $idMyGadgetInfoFile ) ) {
-      $vars['hiText'] = 'The idMyGadgetInfoFile exists! (exp)';
       if ( isset($gadgetDetector) ) {
-        $vars['hiText'] = 'Now we try to get the service, then the jmwsIdMyGadget object...';
+        $vars['hi_text'] = 'Now we try to get the service, then the jmwsIdMyGadget object...';
         idMyGadget_stark_get_the_service();
-        // $jmwsIdMyGadget
+        if (isset($jmwsIdMyGadget) ) {
+          $vars['hiText'] = 'Now the jmwsIdMyGadget object isset!';
+        }
       }
     } else {
       $vars['hiText'] = 'The idMyGadgetInfoFile does NOT exist (exp).';
