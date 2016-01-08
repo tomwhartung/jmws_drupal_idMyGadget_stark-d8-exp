@@ -22,46 +22,33 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   // include_once DRUPAL_ROOT . '/core/includes/install.inc';
   // $idmygadgetIsInstalled = drupal_check_module( 'idmygadget' );
   $config = \Drupal::config('idmygadget.settings');
-  $gadgetDetector = $config->get('idmygadget_gadget_detector');
+  $gadgetDetectorIndex = $config->get('idmygadget_gadget_detector');
   $showSiteNamePhone = $config->get('idmygadget_show_site_name_phone');
   $showSiteNameTablet = $config->get('idmygadget_show_site_name_tablet');
   $showSiteNameDesktop = $config->get('idmygadget_show_site_name_desktop');
 
-  $vars['hi_text'] = 'Initializing hi_text';
-  $vars['hiText'] = 'Initializing hiText';
+  $vars['debugText1'] = 'Initializing debugText1';
+  $vars['debugText2'] = 'Initializing debugText2';
+  $vars['debugText3'] = 'Initializing debugText3';
+  $vars['debugText4'] = 'Initializing debugText4';
 
-  if (isset($jmwsIdMyGadget) ) {
-    unset( $jmwsIdMyGadget->errorMessage );
-  }
-  else {
-    $vars['hi_text'] = 'Instantiating the jmwsIdMyGadget object, if we can...';
-    idmygadget_stark_instantiate_jmwsIdMyGadget_object();
+  $vars['debugText1'] = 'Instantiating the jmwsIdMyGadgetThemeService object...';
+  require_once( 'src/JmwsIdMyGadget/JmwsIdMyGadgetThemeService.php' );
+  $jmwsIdMyGadgetThemeService = new JmwsIdMyGadgetThemeService();
+  $idMyGadgetService = $jmwsIdMyGadgetThemeService->getService();
+
+  if ( isset($jmwsIdMyGadget) ) {
+    $vars['debugText2'] = 'The jmwsIdMyGadget object isset!';
   }
 
-  if (isset($jmwsIdMyGadget) ) {
-    $vars['hiText'] = 'Now the jmwsIdMyGadget object isset!';
+  if ( isset($idMyGadgetService) ) {
+    $vars['debugText3'] = 'The idMyGadgetService object isset!';
   }
 
-  $vars['gadgetDetectorText'] = 'gadgetDetector = "' . $gadgetDetector . '"';
+  $vars['gadgetDetectorText'] = 'gadgetDetectorIndex = "' . $gadgetDetectorIndex . '"';
   $vars['showSiteNamePhoneText'] = '$showSiteNamePhone = "' . $showSiteNamePhone . '"';
   $vars['showSiteNameTabletText'] = '$showSiteNameTablet = "' . $showSiteNameTablet . '"';
   $vars['showSiteNameDesktopText'] = '$showSiteNameDesktop = "' . $showSiteNameDesktop . '"';
-}
-
-function idmygadget_stark_instantiate_jmwsIdMyGadget_object() {
-  $idMyGadgetInfoFile = DRUPAL_ROOT . '/modules/jmws/idmygadget/idmygadget.info.yml';
-  if ( file_exists( $idMyGadgetInfoFile ) ) {
-    if ( isset($gadgetDetector) ) {
-      idMyGadget_stark_get_the_service();
-    }
-  }
-  idmygadget_stark_check_idMyGadget_installation();
-}
-function idMyGadget_stark_get_the_service() {
-  require_once DRUPAL_ROOT . '/modules/jmws/idmygadget/src/IdMyGadgetService.php';
-  // This gives an error ...
-  // $idMyGadgetService = new Drupal\idmygadget\IdMyGadgetService();
-  $idMyGadgetService = Drupal::service( 'idmygadget.idmygadget_service' );
 }
 
 /**
@@ -75,12 +62,12 @@ function idMyGadget_stark_check_idMyGadget_installation() {
   $jmwsIdMyGadget = new JmwsIdMyGadgetModuleMissing();
   $jmwsIdMyGadget->errorMessage = IDMYGADGET_UNKNOWN_ERROR;
 
-  $idMyGadgetInfoFile =  DRUPAL_ROOT . '/' . JmwsIdMyGadgetModuleMissing::IDMYGADGET_INFO_FILE;
+  $idMyGadgetInfoFile =  DRUPAL_ROOT . '/' . JmwsIdMyGadgetThemeService::IDMYGADGET_INFO_FILE;
   $config = \Drupal::config('idmygadget.settings');
-  $gadgetDetector = $config->get('idmygadget_gadget_detector');
+  $gadgetDetectorIndex = $config->get('idmygadget_gadget_detector');
 
   if ( file_exists($idMyGadgetInfoFile) )  {
-    if ( isset($gadgetDetector) ) {
+    if ( isset($gadgetDetectorIndex) ) {
       $jmwsIdMyGadget->errorMessage = IDMYGADGET_UNKNOWN_ERROR;
     }
     else {
