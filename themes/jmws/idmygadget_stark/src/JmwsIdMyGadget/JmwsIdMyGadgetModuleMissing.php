@@ -2,7 +2,7 @@
 /**
  * Defines a class we can use to prevent crashing (with a null pointer error)
  * when device detection is not readily available, such as when the idMyGadget
- * plugin is not installed or not active.
+ * module is not installed or not active.
  */
 if( !defined('DS') )
 {
@@ -37,10 +37,6 @@ define( 'IDMYGADGET_UNKNOWN_ERROR',
 
 class JmwsIdMyGadgetModuleMissing
 {
-	/**
-	 * Location of the plugin file.  We need to know if it's not installed and active.
-	 */
-	const IDMYGADGET_INFO_FILE = 'modules/jmws/idmygadget/idmygadget.info.yml';
 	/**
 	 * Error message, set only when there's an error
 	 * @var type String
