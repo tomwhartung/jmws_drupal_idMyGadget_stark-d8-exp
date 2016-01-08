@@ -40,7 +40,7 @@ class JmwsIdMyGadgetModuleMissing
 	/**
 	 * Location of the plugin file.  We need to know if it's not installed and active.
 	 */
-	const IDMYGADGET_MODULE_FILE = 'sites/all/modules/jmws/idMyGadget/idMyGadget/JmwsIdMyGadgetDrupal.php';
+	const IDMYGADGET_INFO_FILE = 'modules/jmws/idmygadget/idmygadget.info.yml';
 	/**
 	 * Error message, set only when there's an error
 	 * @var type String

@@ -22,10 +22,20 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   // include_once DRUPAL_ROOT . '/core/includes/install.inc';
   // $idmygadgetIsInstalled = drupal_check_module( 'idmygadget' );
 
+  $vars['hi_text'] = 'Initializing hi_text';
+  $vars['hiText'] = 'Initializing hiText';
+
   if (isset($jmwsIdMyGadget) ) {
     unset( $jmwsIdMyGadget->errorMessage );
   }
   else {
+    $idMyGadgetInfoFile = DRUPAL_ROOT . '/modules/jmws/idmygadget/idmygadget.info.yml';
+    $vars['hi_text'] = '$idMyGadgetInfoFile = "' . $idMyGadgetInfoFile . '"';
+    if ( file_exists( $idMyGadgetInfoFile ) ) {
+      $vars['hiText'] = 'The idMyGadgetInfoFile exists! (exp)';
+    } else {
+      $vars['hiText'] = 'The idMyGadgetInfoFile does NOT exist (exp).';
+    }
     idmygadget_stark_check_idMyGadget_installation();
   }
 
@@ -35,8 +45,6 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   $showSiteNamePhone = $config->get('idmygadget_show_site_name_phone');
   $showSiteNameTablet = $config->get('idmygadget_show_site_name_tablet');
   $showSiteNameDesktop = $config->get('idmygadget_show_site_name_desktop');
-  $vars['hi_text'] = 'Now we are setting the hi_text in the starkIdMyGadget_preprocess_page function';
-  $vars['hiText'] = 'For grins we also set the hiText in the starkIdMyGadget_preprocess_page function';
   $vars['gadgetDetectorText'] = 'gadgetDetector = "' . $gadgetDetector . '"';
   $vars['showSiteNamePhoneText'] = '$showSiteNamePhone = "' . $showSiteNamePhone . '"';
   $vars['showSiteNameTabletText'] = '$showSiteNameTablet = "' . $showSiteNameTablet . '"';
@@ -54,10 +62,12 @@ function idMyGadget_stark_check_idMyGadget_installation() {
   $jmwsIdMyGadget = new JmwsIdMyGadgetModuleMissing();
   $jmwsIdMyGadget->errorMessage = IDMYGADGET_UNKNOWN_ERROR;
 
-  $rooted_module_file_name =  DRUPAL_ROOT . '/' . JmwsIdMyGadgetModuleMissing::IDMYGADGET_MODULE_FILE;
+  $idMyGadgetInfoFile =  DRUPAL_ROOT . '/' . JmwsIdMyGadgetModuleMissing::IDMYGADGET_INFO_FILE;
+  $config = \Drupal::config('idmygadget.settings');
+  $gadgetDetector = $config->get('idmygadget_gadget_detector');
 
-  if ( file_exists($rooted_module_file_name) )  {
-    if ( module_exists('idMyGadget') ) {
+  if ( file_exists($idMyGadgetInfoFile) )  {
+    if ( isset($gadgetDetector) ) {
       $jmwsIdMyGadget->errorMessage = IDMYGADGET_UNKNOWN_ERROR;
     }
     else {
