@@ -34,19 +34,12 @@ function idmygadget_stark_preprocess_page( &$vars ) {
     unset( $jmwsIdMyGadget->errorMessage );
   }
   else {
-    $idMyGadgetInfoFile = DRUPAL_ROOT . '/modules/jmws/idmygadget/idmygadget.info.yml';
-    if ( file_exists( $idMyGadgetInfoFile ) ) {
-      if ( isset($gadgetDetector) ) {
-        $vars['hi_text'] = 'Now we try to get the service, then the jmwsIdMyGadget object...';
-        idMyGadget_stark_get_the_service();
-        if (isset($jmwsIdMyGadget) ) {
-          $vars['hiText'] = 'Now the jmwsIdMyGadget object isset!';
-        }
-      }
-    } else {
-      $vars['hiText'] = 'The idMyGadgetInfoFile does NOT exist (exp).';
-    }
-    idmygadget_stark_check_idMyGadget_installation();
+    $vars['hi_text'] = 'Instantiating the jmwsIdMyGadget object, if we can...';
+    idmygadget_stark_instantiate_jmwsIdMyGadget_object();
+  }
+
+  if (isset($jmwsIdMyGadget) ) {
+    $vars['hiText'] = 'Now the jmwsIdMyGadget object isset!';
   }
 
   $vars['gadgetDetectorText'] = 'gadgetDetector = "' . $gadgetDetector . '"';
@@ -55,6 +48,15 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   $vars['showSiteNameDesktopText'] = '$showSiteNameDesktop = "' . $showSiteNameDesktop . '"';
 }
 
+function idmygadget_stark_instantiate_jmwsIdMyGadget_object() {
+  $idMyGadgetInfoFile = DRUPAL_ROOT . '/modules/jmws/idmygadget/idmygadget.info.yml';
+  if ( file_exists( $idMyGadgetInfoFile ) ) {
+    if ( isset($gadgetDetector) ) {
+      idMyGadget_stark_get_the_service();
+    }
+  }
+  idmygadget_stark_check_idMyGadget_installation();
+}
 function idMyGadget_stark_get_the_service() {
   require_once DRUPAL_ROOT . '/modules/jmws/idmygadget/src/IdMyGadgetService.php';
   // This gives an error ...
