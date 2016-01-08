@@ -1,0 +1,12 @@
+#
+# Documentation is here: http://git-scm.com/docs/gitignore
+#
+tmp/
+#
+#  I switch between vi, netbeans, and eclipse
+#
+*.swp
+/nbproject/
+/.buildpath
+/.project
+/.settings/
