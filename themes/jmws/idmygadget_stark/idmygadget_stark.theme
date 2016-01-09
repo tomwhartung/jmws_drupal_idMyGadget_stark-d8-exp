@@ -37,6 +37,10 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   $jmwsIdMyGadgetThemeService = new JmwsIdMyGadgetThemeService();
   $idMyGadgetService = $jmwsIdMyGadgetThemeService->getService();
 
+  if ( ! isset($idMyGadgetService) ) {
+    drupal_set_message( t($jmwsIdMyGadgetThemeService ->getErrorMessage()), 'error' );
+  }
+
   if ( isset($jmwsIdMyGadget) ) {
     $vars['debugText2'] = 'The jmwsIdMyGadget object isset (exp)!';
   }
