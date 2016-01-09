@@ -14,11 +14,6 @@ class JmwsIdMyGadgetThemeService
 	const IDMYGADGET_INFO_FILE = 'modules/jmws/idmygadget/idmygadget.info.yml';
 
 	/**
-	 * The error message, if there is one
-	 */
-	public $errorMessage = null;
-
-	/**
 	 * The service defined by the module.  We should try to use this service rather than the global object
 	 */
 	protected $idMyGadgetService = null;
@@ -72,6 +67,15 @@ class JmwsIdMyGadgetThemeService
 		}
 
 		return $this->idMyGadgetService;
+	}
+
+	/**
+	 * Returns the error message, if there is one
+	 */
+	public function getErrorMessage()
+	{
+		global $jmwsIdMyGadget;
+		return $jmwsIdMyGadget->errorMessage;
 	}
 
 	/**
