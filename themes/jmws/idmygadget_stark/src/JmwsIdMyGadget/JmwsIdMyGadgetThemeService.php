@@ -13,51 +13,76 @@ class JmwsIdMyGadgetThemeService
 	 */
 	const IDMYGADGET_INFO_FILE = 'modules/jmws/idmygadget/idmygadget.info.yml';
 
+	/**
+	 * The service defined by the module.  We should try to use this service rather than the global object
+	 */
 	protected $idMyGadgetService = null;
-	protected $config = null;
+
+	/**
+	 * If we can't find the module's info file, we assume the code has not been downloaded.
+	 */
 	protected $idMyGadgetInfoFile = null;
 
 	/**
-	 * If the $jmwsIdMyGadget is not yet instantiated,
-	 *   Get the module's service, if possible, instantiating it as a side effect
+	 * If we can't get the module's config options, we assume it is not enabled.
+	 */
+	protected $config = null;
+
+	/**
+	 * Set member variables that help us get the service, or else (if unable to) help us diagnose the issue
 	 */
 	public function __construct()
 	{
 		$this->config = \Drupal::config('idmygadget.settings');
 		$this->idMyGadgetInfoFile = DRUPAL_ROOT . '/' . self::IDMYGADGET_INFO_FILE;
-		error_log( 'JmwsIdMyGadgetThemeService constructor, $this->idMyGadgetInfoFile = ' . $this->idMyGadgetInfoFile );
 	}
 
+	/**
+	 * Returns the service from the module,
+	 * If unable to do so, instantiate a module missing object that can help prevent whitescreens
+	 */
 	public function getService()
 	{
 		global $jmwsIdMyGadget;
 
 		if ( ! isset($this->idMyGadgetService) || ! isset($jmwsIdMyGadget) )
 		{
-			if ( file_exists( $this->idMyGadgetInfoFile ) )     // check if module is installed
+			if ( file_exists( $this->idMyGadgetInfoFile ) )     // check if module is installed (code is present)
 			{
 				$gadgetDetectorIndex = $this->config->get('idmygadget_gadget_detector');
-				if ( isset($gadgetDetectorIndex) )                    // check if module is enabled
+				if ( isset($gadgetDetectorIndex) )               // check if module is enabled (installed in back end)
 				{
 					require_once DRUPAL_ROOT . '/modules/jmws/idmygadget/src/IdMyGadgetService.php';
 					$this->idMyGadgetService = Drupal::service( 'idmygadget.idmygadget_service' );
 				}
 				else
 				{
-					$this->instantiateModuleMissingObject();
-					$this->setModuleMissingErrorMessage();
+					$this->unableToGetService();
 				}
 			}
 			else
 			{
-				$this->instantiateModuleMissingObject();
-				$this->setModuleMissingErrorMessage();
+				$this->unableToGetService();
 			}
 		}
 
 		return $this->idMyGadgetService;
 	}
 
+	/**
+	 * Instantiate the module missing object and set the error message
+	 */
+	protected function unableToGetService()
+	{
+		$this->instantiateModuleMissingObject();
+		$this->setModuleMissingErrorMessage();
+		drupal_set_message( t($jmwsIdMyGadget->errorMessage), 'error' );
+	}
+
+	/**
+	 * If the module is not available,
+	 *   instantiate a module missing object (included in this theme) to keep us from whitescreening
+	 */
 	protected function instantiateModuleMissingObject()
 	{
 		global $jmwsIdMyGadget;
@@ -66,6 +91,9 @@ class JmwsIdMyGadgetThemeService
 		$jmwsIdMyGadget->errorMessage = IDMYGADGET_UNKNOWN_ERROR;
 	}
 
+	/**
+	 * When the module is not available, we diagnose the issue and set the error message accordingly
+	 */
 	protected function setModuleMissingErrorMessage()
 	{
 		global $jmwsIdMyGadget;
@@ -85,7 +113,5 @@ class JmwsIdMyGadgetThemeService
 		{
 			$jmwsIdMyGadget->errorMessage = IDMYGADGET_NOT_INSTALLED;
 		}
-
-		drupal_set_message( t($jmwsIdMyGadget->errorMessage), 'error' );
 	}
 }
