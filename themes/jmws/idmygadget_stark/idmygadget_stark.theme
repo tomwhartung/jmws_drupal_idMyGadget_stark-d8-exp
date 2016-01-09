@@ -49,7 +49,7 @@ function idmygadget_stark_preprocess_page( &$vars ) {
     $vars['debugText3'] = 'The idMyGadgetService object isset (exp)!';
   }
 
-  $vars['debugText4'] = '$jmwsIdMyGadget->getSanityCheckString(): ' . $jmwsIdMyGadget->getSanityCheckString();
+  $vars['sanityCheckText'] = '$jmwsIdMyGadget->getSanityCheckString(): ' . $jmwsIdMyGadget->getSanityCheckString();
 
   $vars['gadgetDetectorText'] = 'gadgetDetectorIndex = "' . $gadgetDetectorIndex . '"';
   $vars['showSiteNamePhoneText'] = '$showSiteNamePhone = "' . $showSiteNamePhone . '"';
