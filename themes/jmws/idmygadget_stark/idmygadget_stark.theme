@@ -53,36 +53,4 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   $vars['showSiteNameDesktopText'] = '$showSiteNameDesktop = "' . $showSiteNameDesktop . '"';
 }
 
-/**
- * Check whether the IdMyGadget module is installed and enabled,
- * If something is wrong, generate the most accurate error message possible
- */
-function idMyGadget_stark_check_idMyGadget_installation() {
-  global $jmwsIdMyGadget;
-
-  require_once( 'src/JmwsIdMyGadget/JmwsIdMyGadgetModuleMissing.php' );
-  $jmwsIdMyGadget = new JmwsIdMyGadgetModuleMissing();
-  $jmwsIdMyGadget->errorMessage = IDMYGADGET_UNKNOWN_ERROR;
-
-  $idMyGadgetInfoFile =  DRUPAL_ROOT . '/' . JmwsIdMyGadgetThemeService::IDMYGADGET_INFO_FILE;
-  $config = \Drupal::config('idmygadget.settings');
-  $gadgetDetectorIndex = $config->get('idmygadget_gadget_detector');
-
-  if ( file_exists($idMyGadgetInfoFile) )  {
-    if ( isset($gadgetDetectorIndex) ) {
-      $jmwsIdMyGadget->errorMessage = IDMYGADGET_UNKNOWN_ERROR;
-    }
-    else {
-      $jmwsIdMyGadget->errorMessage = IDMYGADGET_NOT_ACTIVE;
-    }
-  }
-  else {
-    $jmwsIdMyGadget->errorMessage = IDMYGADGET_NOT_INSTALLED;
-    // print '<p>It is NOT installed</p>';
-  }
-
-  drupal_set_message( t($jmwsIdMyGadget->errorMessage), 'error' );
-}
-
-
 ?>
