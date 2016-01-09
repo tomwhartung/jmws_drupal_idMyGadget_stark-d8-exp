@@ -14,6 +14,11 @@ class JmwsIdMyGadgetThemeService
 	const IDMYGADGET_INFO_FILE = 'modules/jmws/idmygadget/idmygadget.info.yml';
 
 	/**
+	 * The error message, if there is one
+	 */
+	public $errorMessage = null;
+
+	/**
 	 * The service defined by the module.  We should try to use this service rather than the global object
 	 */
 	protected $idMyGadgetService = null;
@@ -76,7 +81,7 @@ class JmwsIdMyGadgetThemeService
 	{
 		$this->instantiateModuleMissingObject();
 		$this->setModuleMissingErrorMessage();
-		drupal_set_message( t($jmwsIdMyGadget->errorMessage), 'error' );
+		$this->errorMessage = $jmwsIdMyGadget->errorMessage;
 	}
 
 	/**
@@ -97,6 +102,7 @@ class JmwsIdMyGadgetThemeService
 	protected function setModuleMissingErrorMessage()
 	{
 		global $jmwsIdMyGadget;
+
 		if ( file_exists($this->idMyGadgetInfoFile) )
 		{
 			$gadgetDetectorIndex = $this->config->get('idmygadget_gadget_detector');
