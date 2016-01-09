@@ -38,12 +38,14 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   $idMyGadgetService = $jmwsIdMyGadgetThemeService->getService();
 
   if ( isset($jmwsIdMyGadget) ) {
-    $vars['debugText2'] = 'The jmwsIdMyGadget object isset!';
+    $vars['debugText2'] = 'The jmwsIdMyGadget object isset (exp)!';
   }
 
   if ( isset($idMyGadgetService) ) {
-    $vars['debugText3'] = 'The idMyGadgetService object isset!';
+    $vars['debugText3'] = 'The idMyGadgetService object isset (exp)!';
   }
+
+  $vars['debugText4'] = '$jmwsIdMyGadget->getSanityCheckString(): ' . $jmwsIdMyGadget->getSanityCheckString();
 
   $vars['gadgetDetectorText'] = 'gadgetDetectorIndex = "' . $gadgetDetectorIndex . '"';
   $vars['showSiteNamePhoneText'] = '$showSiteNamePhone = "' . $showSiteNamePhone . '"';

@@ -25,34 +25,34 @@ class JmwsIdMyGadgetThemeService
 	{
 		$this->config = \Drupal::config('idmygadget.settings');
 		$this->idMyGadgetInfoFile = DRUPAL_ROOT . '/' . self::IDMYGADGET_INFO_FILE;
+		error_log( 'JmwsIdMyGadgetThemeService constructor, $this->idMyGadgetInfoFile = ' . $this->idMyGadgetInfoFile );
 	}
 
 	public function getService()
 	{
 		global $jmwsIdMyGadget;
 
-		if ( isset($jmwsIdMyGadget) )
+		if ( ! isset($this->idMyGadgetService) || ! isset($jmwsIdMyGadget) )
 		{
-			unset( $jmwsIdMyGadget->errorMessage );
-		}
-		else if ( file_exists( $idMyGadgetInfoFile ) )     // check if module is installed
-		{
-			$gadgetDetectorIndex = $this->config->get('idmygadget_gadget_detector');
-			if ( isset($this->gadgetDetectorIndex) )        // check if module is enabled
+			if ( file_exists( $this->idMyGadgetInfoFile ) )     // check if module is installed
 			{
-				require_once DRUPAL_ROOT . '/modules/jmws/idmygadget/src/IdMyGadgetService.php';
-				$this->idMyGadgetService = Drupal::service( 'idmygadget.idmygadget_service' );
+				$gadgetDetectorIndex = $this->config->get('idmygadget_gadget_detector');
+				if ( isset($gadgetDetectorIndex) )                    // check if module is enabled
+				{
+					require_once DRUPAL_ROOT . '/modules/jmws/idmygadget/src/IdMyGadgetService.php';
+					$this->idMyGadgetService = Drupal::service( 'idmygadget.idmygadget_service' );
+				}
+				else
+				{
+					$this->instantiateModuleMissingObject();
+					$this->setModuleMissingErrorMessage();
+				}
 			}
 			else
 			{
 				$this->instantiateModuleMissingObject();
 				$this->setModuleMissingErrorMessage();
 			}
-		}
-		else
-		{
-			$this->instantiateModuleMissingObject();
-			$this->setModuleMissingErrorMessage();
 		}
 
 		return $this->idMyGadgetService;
@@ -88,5 +88,4 @@ class JmwsIdMyGadgetThemeService
 
 		drupal_set_message( t($jmwsIdMyGadget->errorMessage), 'error' );
 	}
-
 }
