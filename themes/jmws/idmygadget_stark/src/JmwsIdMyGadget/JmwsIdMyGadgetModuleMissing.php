@@ -13,8 +13,8 @@ if( !defined('DS') )
  */
 define( 'IDMYGADGET_ERROR_PROLOG',
 	'<div class="idmygadget-error"><p>This theme depends on the ' .
-	'<a class="idmygadget-error" href="https://github.com/tomwhartung/jmws_idMyGadget_for_drupal" target="_blank">' .
-		'jmws_idMyGadget_for_drupal</a> module.</p>' );
+	'<a class="idmygadget-error" href="https://github.com/tomwhartung/jmws_idMyGadget_for_drupal-d8" target="_blank">' .
+		'jmws_idMyGadget_for_drupal-d8</a> module.</p>' );
 /**
  * Error message for when the plugin is not installed
  */
