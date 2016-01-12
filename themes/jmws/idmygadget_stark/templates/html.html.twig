@@ -34,15 +34,11 @@
     <js-placeholder token="{{ placeholder_token|raw }}">
   </head>
   <body{{ attributes }}>
-<p>Welcome to the debug area...</p>
     <a href="#main-content" class="visually-hidden focusable">
       {{ 'Skip to main content'|t }}
     </a>
-    <p>Page top (after this hi_text?): {{ hi_text }}</p>
     {{ page_top }}
-    <p>Page just page (and maybe hi_text?): {{ hi_text }}</p>
     {{ page }}
-    <p>Page bottom (and surely the hi_text!): {{ hi_text }}</p>
     {{ page_bottom }}
     <js-bottom-placeholder token="{{ placeholder_token|raw }}">
   </body>
