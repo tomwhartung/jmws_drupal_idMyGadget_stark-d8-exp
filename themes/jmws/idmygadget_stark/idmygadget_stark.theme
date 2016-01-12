@@ -56,4 +56,22 @@ function idmygadget_stark_preprocess_page( &$vars ) {
   $vars['sanityCheckText'] = '$jmwsIdMyGadget->getSanityCheckString(): ' . $jmwsIdMyGadget->getSanityCheckString();
 }
 
+/**
+ * Add "user-scalable" attribute to viewport meta tag
+ * References:
+ *   http://drupal.stackexchange.com/questions/134130/trying-to-add-an-html-head-tag-in-drupal-8-beta-2
+ *   https://api.drupal.org/api/drupal/core!modules!system!tests!modules!common_test!common_test.module/function/common_test_page_attachments_alter/8
+ */
+function idmygadget_stark_page_attachments_alter( array &$page) {
+    $viewport = array(
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'name' => 'viewport',
+        'content' => 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
+      ),
+    );
+    $page['#attached']['html_head'][] = [$viewport, 'viewport'];
+}
+
 ?>
